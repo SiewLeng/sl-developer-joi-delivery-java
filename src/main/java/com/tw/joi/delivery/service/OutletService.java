@@ -14,7 +14,7 @@ public class OutletService {
 
     static List<GroceryProduct> groceryProducts = SeedData.groceryProducts;
 
-    public static Set<GroceryProductInventoryInfo> getInventory(String outletId) {
+    public Set<GroceryProductInventoryInfo> getInventory(String outletId) {
         Set<GroceryProductInventoryInfo> inventory = new HashSet<>();
         for (GroceryProduct groceryProduct: groceryProducts) {
             if (groceryProduct.getStore().getOutletId().equals(outletId)) {

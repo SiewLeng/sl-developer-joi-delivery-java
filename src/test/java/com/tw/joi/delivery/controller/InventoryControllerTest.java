@@ -51,7 +51,7 @@ class InventoryControllerTest {
                 .threshold(10)
                 .availableStock(3)
                 .build();
-        Set<Product> products = new HashSet<>();
+        Set<GroceryProduct> products = new HashSet<>();
         products.add(bread);
         when(outletService.getInventory(storeId)).thenReturn(new StoreInventory(storeId, products));
 

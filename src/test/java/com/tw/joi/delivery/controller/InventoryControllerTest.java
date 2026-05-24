@@ -56,7 +56,7 @@ class InventoryControllerTest {
         when(outletService.getInventory(storeId)).thenReturn(new StoreInventory(storeId, products));
 
         mockMvc.perform(MockMvcRequestBuilders.get(getUrl,"store101")
-                            .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
                 //put meaning assertions
                 .andExpect(jsonPath("$.outletId").value(storeId))

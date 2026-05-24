@@ -2,9 +2,15 @@ package com.tw.joi.delivery.controller;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.tw.joi.delivery.dto.response.GroceryProductInventoryInfo;
+import com.jayway.jsonpath.JsonPath;
+import com.tw.joi.delivery.domain.GroceryProduct;
+import com.tw.joi.delivery.domain.GroceryStore;
+import com.tw.joi.delivery.domain.Product;
+import com.tw.joi.delivery.dto.response.StoreInventory;
 import com.tw.joi.delivery.service.CartService;
 import com.tw.joi.delivery.service.OutletService;
 import org.junit.jupiter.api.Test;
@@ -16,7 +22,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @WebMvcTest(InventoryController.class)
@@ -32,20 +41,33 @@ class InventoryControllerTest {
     void shouldReturnTheHealthOfTheStore() throws Exception {
         String getUrl = "/inventory/health?storeId={storeId}";
         String storeId = "store101";
+        String outletName = "Fresh Picks";
         //add required mocking.
-        Set<GroceryProductInventoryInfo> inventory = new HashSet<>();
-        inventory.add(new GroceryProductInventoryInfo(
-                "product101", "Wheat Bread", 2, "store101"));
-        when(outletService.getInventory(storeId)).thenReturn(inventory);
+        GroceryStore store101 = GroceryStore.builder()
+                .name(outletName)
+                .outletId(storeId)
+                .build();
+        GroceryProduct bread = GroceryProduct.builder()
+                .productName("Wheat Bread")
+                .productId("product101")
+                .mrp(BigDecimal.valueOf(10.5))
+                .weight(BigDecimal.valueOf(500.00))
+                .store(store101)
+                .threshold(10)
+                .availableStock(3)
+                .build();
+        Set<Product> products = new HashSet<>();
+        products.add(bread);
+        when(outletService.getInventory(storeId)).thenReturn(new StoreInventory(storeId, products));
 
         mockMvc.perform(MockMvcRequestBuilders.get(getUrl,"store101")
                             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
                 //put meaning assertions
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].productId").value("product101"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].productName").value("Wheat Bread"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].availableStock").value(2))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].outletId").value("store101"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(1)));
+                .andExpect(jsonPath("$.outletId").value(storeId))
+                .andExpect(jsonPath("$.products", hasSize(1)))
+                .andExpect(jsonPath("$.products[0].productId").value("product101"))
+                .andExpect(jsonPath("$.products[0].store.outletId").value(storeId))
+                .andDo(print());
     }
 }

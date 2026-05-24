@@ -1,9 +1,7 @@
 package com.tw.joi.delivery.seedData;
 
 import com.tw.joi.delivery.domain.*;
-import com.tw.joi.delivery.dto.response.GroceryProductInventoryInfo;
 import com.tw.joi.delivery.service.OutletService;
-import org.springframework.lang.NonNull;
 
 import java.math.BigDecimal;
 import java.util.*;

@@ -1,6 +1,6 @@
 package com.tw.joi.delivery.controller;
 
-import com.tw.joi.delivery.dto.response.GroceryProductInventoryInfo;
+import com.tw.joi.delivery.dto.response.StoreInventory;
 import com.tw.joi.delivery.service.OutletService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +20,7 @@ public class InventoryController {
 
 
     @GetMapping("/health")
-    public ResponseEntity<Set<GroceryProductInventoryInfo>> fetchStoreInventoryHealth(@RequestParam(name = "storeId") String storeId) {
+    public ResponseEntity<StoreInventory> fetchStoreInventoryHealth(@RequestParam(name = "storeId") String storeId) {
         return ResponseEntity.ok(outletService.getInventory(storeId));
     }
 }

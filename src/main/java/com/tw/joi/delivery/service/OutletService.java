@@ -1,7 +1,8 @@
 package com.tw.joi.delivery.service;
 
 import com.tw.joi.delivery.domain.GroceryProduct;
-import com.tw.joi.delivery.dto.response.GroceryProductInventoryInfo;
+import com.tw.joi.delivery.domain.Product;
+import com.tw.joi.delivery.dto.response.StoreInventory;
 import com.tw.joi.delivery.seedData.SeedData;
 import org.springframework.stereotype.Service;
 
@@ -14,20 +15,14 @@ public class OutletService {
 
     static List<GroceryProduct> groceryProducts = SeedData.groceryProducts;
 
-    public Set<GroceryProductInventoryInfo> getInventory(String outletId) {
-        Set<GroceryProductInventoryInfo> inventory = new HashSet<>();
+    public StoreInventory getInventory(String outletId) {
+        Set<Product> products = new HashSet<>();
         for (GroceryProduct groceryProduct: groceryProducts) {
             if (groceryProduct.getStore().getOutletId().equals(outletId)) {
-                String productId = groceryProduct.getProductId();
-                String productName = groceryProduct.getProductName();
-                int availableStock = groceryProduct.getAvailableStock();
-                String productOutletId = groceryProduct.getStore().getOutletId();
-                inventory.add(new GroceryProductInventoryInfo(
-                        productId, productName,
-                        availableStock, productOutletId));
+                products.add(groceryProduct);
             }
         }
-        return inventory;
+        return new StoreInventory(outletId, products);
     }
 
 }

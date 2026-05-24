@@ -6,12 +6,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.jayway.jsonpath.JsonPath;
 import com.tw.joi.delivery.domain.GroceryProduct;
 import com.tw.joi.delivery.domain.GroceryStore;
 import com.tw.joi.delivery.domain.Product;
 import com.tw.joi.delivery.dto.response.StoreInventory;
-import com.tw.joi.delivery.service.CartService;
 import com.tw.joi.delivery.service.OutletService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +18,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @WebMvcTest(InventoryController.class)
@@ -40,9 +35,9 @@ class InventoryControllerTest {
     @Test
     void shouldReturnTheHealthOfTheStore() throws Exception {
         String getUrl = "/inventory/health?storeId={storeId}";
+        //add required mocking.
         String storeId = "store101";
         String outletName = "Fresh Picks";
-        //add required mocking.
         GroceryStore store101 = GroceryStore.builder()
                 .name(outletName)
                 .outletId(storeId)

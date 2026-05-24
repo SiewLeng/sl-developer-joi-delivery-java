@@ -1,6 +1,7 @@
 package com.tw.joi.delivery.service;
 
 import com.tw.joi.delivery.domain.GroceryProduct;
+import net.bytebuddy.implementation.bytecode.Throw;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,12 +28,13 @@ public class ProductServiceTest {
         String productId = "product101";
         String outletId = "store101";
         GroceryProduct product = ProductService.getProduct(productId, outletId);
-        boolean result = ProductService.decrementAvailableStockByOne(productId, outletId);
-        if (product.getAvailableStock() >= 0) {
+        int initialStockAvailable = product.getAvailableStock();
+        for (int i = initialStockAvailable; i > 0; i--) {
+            boolean result = ProductService.decrementAvailableStockByOne(productId, outletId);
             Assertions.assertTrue(result);
-        } else {
-            Assertions.assertFalse(result);
         }
+        boolean result = ProductService.decrementAvailableStockByOne(productId, outletId);
+        Assertions.assertFalse(result);
     }
 
     @Test

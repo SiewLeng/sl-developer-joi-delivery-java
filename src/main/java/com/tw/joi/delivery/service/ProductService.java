@@ -4,7 +4,6 @@ import com.tw.joi.delivery.domain.GroceryProduct;
 import com.tw.joi.delivery.seedData.SeedData;
 import java.util.List;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.locks.Lock;

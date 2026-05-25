@@ -49,6 +49,7 @@ public class CartServiceTest {
                 .getAvailableStock();
 
         int cartProductSize = cartService.getCartForUser(userId).getProducts().size();
+        Assertions.assertEquals(0, cartProductSize);
 
         for (int i = initialStockAvailability; i > 0; i--) {
             CartProductInfo cartProductInfo = cartService.addProductToCartForUser(addProductRequest);

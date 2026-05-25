@@ -38,6 +38,7 @@ public class CartService {
 
     public Cart getCartForUser(String userId) {
         User user=userService.fetchUserById(userId);
+        if (user == null) return null;
         return fetchCartForUser(user);
     }
 

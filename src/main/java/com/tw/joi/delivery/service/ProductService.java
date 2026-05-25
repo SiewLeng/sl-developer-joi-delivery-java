@@ -11,10 +11,10 @@ import java.util.concurrent.locks.ReentrantLock;
 
 @Service
 public class ProductService {
-    private final static Lock lock = new ReentrantLock();
-    private final static List<GroceryProduct> products= SeedData.groceryProducts;
+    private final Lock lock = new ReentrantLock();
+    private final List<GroceryProduct> products= SeedData.groceryProducts;
 
-    public static GroceryProduct getProduct(String productId, String outletId) {
+    public GroceryProduct getProduct(String productId, String outletId) {
         return products.stream()
             .filter(groceryProduct ->
                         groceryProduct.getProductId().equals(productId)
@@ -23,7 +23,7 @@ public class ProductService {
             .orElse(null);
     }
 
-    public static boolean decrementAvailableStockByOne(String productId, String outletId) {
+    public boolean decrementAvailableStockByOne(String productId, String outletId) {
         GroceryProduct product = getProduct(productId, outletId);
         if (product == null) return false;
         int availableStock = 0;

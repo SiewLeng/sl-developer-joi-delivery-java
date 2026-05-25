@@ -4,21 +4,25 @@ import com.tw.joi.delivery.domain.GroceryProduct;
 import net.bytebuddy.implementation.bytecode.Throw;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 public class ProductServiceTest {
 
+    @Autowired
+    ProductService productService;
+
     @Test
     void shouldGetValidProduct() {
-        GroceryProduct product = ProductService.getProduct("product101", "store101");
+        GroceryProduct product = productService.getProduct("product101", "store101");
         Assertions.assertEquals("product101", product.getProductId());
         Assertions.assertEquals("store101", product.getStore().getOutletId());
     }
 
     @Test
     void shouldGetInValidProduct() {
-        GroceryProduct product = ProductService.getProduct("product101", "store102");
+        GroceryProduct product = productService.getProduct("product101", "store102");
         Assertions.assertNull(product);
     }
 
@@ -27,13 +31,13 @@ public class ProductServiceTest {
         // valid product
         String productId = "product101";
         String outletId = "store101";
-        GroceryProduct product = ProductService.getProduct(productId, outletId);
+        GroceryProduct product = productService.getProduct(productId, outletId);
         int initialStockAvailable = product.getAvailableStock();
         for (int i = initialStockAvailable; i > 0; i--) {
-            boolean result = ProductService.decrementAvailableStockByOne(productId, outletId);
+            boolean result = productService.decrementAvailableStockByOne(productId, outletId);
             Assertions.assertTrue(result);
         }
-        boolean result = ProductService.decrementAvailableStockByOne(productId, outletId);
+        boolean result = productService.decrementAvailableStockByOne(productId, outletId);
         Assertions.assertFalse(result);
     }
 
@@ -42,7 +46,7 @@ public class ProductServiceTest {
         // invalid product
         String productId = "product101";
         String outletId = "store102";
-        boolean result = ProductService.decrementAvailableStockByOne(productId, outletId);
+        boolean result = productService.decrementAvailableStockByOne(productId, outletId);
         Assertions.assertFalse(result);
     }
 }

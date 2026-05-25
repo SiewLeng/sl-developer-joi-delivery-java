@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 public class CartService {
     private final Map<String,Cart> userCarts= SeedData.cartForUsers;
     private final UserService userService;
+    private final ProductService productService;
 
     public CartProductInfo addProductToCartForUser(AddProductRequest addProductRequest) {
         User user=userService.fetchUserById(addProductRequest.getUserId());
@@ -25,12 +26,12 @@ public class CartService {
         if (!outlet.getOutletId().equals(addProductRequest.getOutletId())) {
             return new CartProductInfo(cart, null, null);
         }
-        boolean isAvailabilityAndReduceStockByOne = ProductService.decrementAvailableStockByOne(
+        boolean isAvailabilityAndReduceStockByOne = productService.decrementAvailableStockByOne(
                 addProductRequest.getProductId(), addProductRequest.getOutletId());
         if (!isAvailabilityAndReduceStockByOne) {
             return new CartProductInfo(cart, null, null);
         }
-        GroceryProduct product = ProductService.getProduct(addProductRequest.getProductId(), addProductRequest.getOutletId());
+        GroceryProduct product = productService.getProduct(addProductRequest.getProductId(), addProductRequest.getOutletId());
         cart.getProducts().add(product);
         return new CartProductInfo(cart, product, product.getSellingPrice());
     }

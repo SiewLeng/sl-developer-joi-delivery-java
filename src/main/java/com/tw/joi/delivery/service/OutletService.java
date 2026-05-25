@@ -13,7 +13,7 @@ import java.util.Set;
 @Service
 public class OutletService {
 
-    static List<GroceryProduct> groceryProducts = SeedData.groceryProducts;
+    private final List<GroceryProduct> groceryProducts = SeedData.groceryProducts;
 
     public StoreInventory getInventory(String outletId) {
         Set<GroceryProduct> products = new HashSet<>();

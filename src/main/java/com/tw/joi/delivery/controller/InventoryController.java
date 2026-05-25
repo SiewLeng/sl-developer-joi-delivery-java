@@ -9,15 +9,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-import java.util.Set;
-
 @RestController
 @RequestMapping("/inventory")
 @RequiredArgsConstructor
 public class InventoryController {
-    private final OutletService outletService;
 
+    private final OutletService outletService;
 
     @GetMapping("/health")
     public ResponseEntity<StoreInventory> fetchStoreInventoryHealth(@RequestParam(name = "storeId") String storeId) {
